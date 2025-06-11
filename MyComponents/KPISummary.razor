@@ -1,0 +1,50 @@
+@using MudBlazor
+@using System.Globalization
+
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h5" Class="mb-4">Business Overview</MudText>
+    
+    <div class="d-flex flex-row gap-4">
+        <MudStack>
+            <MudText Typo="Typo.subtitle1">Revenue</MudText>
+            <MudText Typo="Typo.h4" Color="Color.Primary">@($"{Revenue:C0}")</MudText>
+            <MudText Typo="Typo.body2" Color="@(RevenueGrowth >= 0 ? Color.Success : Color.Error)">
+                <MudIcon Icon="@(RevenueGrowth >= 0 ? Icons.Material.Filled.TrendingUp : Icons.Material.Filled.TrendingDown)" />
+                @($"{RevenueGrowth:+0.0;-0.0}%")
+            </MudText>
+        </MudStack>
+
+        <MudDivider Vertical="true" FlexItem="true" />
+
+        <MudStack>
+            <MudText Typo="Typo.subtitle1">Active Users</MudText>
+            <MudText Typo="Typo.h4">@ActiveUsers.ToString("N0")</MudText>
+            <MudText Typo="Typo.body2" Color="@(UserGrowth >= 0 ? Color.Success : Color.Error)">
+                <MudIcon Icon="@(UserGrowth >= 0 ? Icons.Material.Filled.TrendingUp : Icons.Material.Filled.TrendingDown)" />
+                @($"{UserGrowth:+0.0;-0.0}%")
+            </MudText>
+        </MudStack>
+
+        <MudDivider Vertical="true" FlexItem="true" />
+
+        <MudStack>
+            <MudText Typo="Typo.subtitle1">Customer Satisfaction</MudText>
+            <MudText Typo="Typo.h4">@($"{CustomerSatisfaction:0.0}")</MudText>
+            <MudRating ReadOnly="true" Value="@((int)Math.Round(CustomerSatisfaction / 2))" />
+        </MudStack>
+    </div>
+</MudPaper>
+
+@code {
+    private decimal Revenue { get; set; } = 1250000M;
+    private double RevenueGrowth { get; set; } = 12.5;
+    private int ActiveUsers { get; set; } = 25678;
+    private double UserGrowth { get; set; } = 8.3;
+    private double CustomerSatisfaction { get; set; } = 8.7;
+
+    protected override void OnInitialized()
+    {
+        // In a real app, these would come from a service
+        base.OnInitialized();
+    }
+}

@@ -1,0 +1,71 @@
+@using MudBlazor
+
+<MudPaper Class="pa-4">
+    <MudStack>
+        <div class="d-flex justify-space-between align-center">
+            <MudText Typo="Typo.h6">Sales Performance</MudText>
+        </div>
+
+        <MudChart ChartType="ChartType.Line" ChartSeries="@Series" XAxisLabels="@XAxisLabels" Width="100%" Height="300px">
+            <CustomGraphics>
+                <style>
+                    .mud-chart-serie {
+                        stroke-width: 2px;
+                    }
+                </style>
+            </CustomGraphics>
+        </MudChart>
+
+        @if (selectedValue.HasValue)
+        {
+            <MudText Typo="Typo.body2" Class="mt-2">
+                Selected: @($"{selectedValue:C0}")
+            </MudText>
+        }
+    </MudStack>
+</MudPaper>
+
+@code {
+    private decimal? selectedValue;
+    private List<ChartSeries> Series = new();
+    private string[] XAxisLabels = Array.Empty<string>();
+
+    protected override void OnInitialized()
+    {
+        UpdateChartData("7days");
+    }
+
+    private void UpdateChartData(string period)
+    {
+        var days = period switch
+        {
+            "7days" => 7,
+            "90days" => 90,
+            _ => 30
+        };
+
+        // Generate fake sales data
+        var rnd = new Random();
+        var startDate = DateTime.Now.AddDays(-days);
+        var salesData = Enumerable.Range(0, days)
+            .Select(i => new
+            {
+                Date = startDate.AddDays(i),
+                Amount = rnd.Next(50000, 150000)
+            })
+            .ToList();
+
+        XAxisLabels = salesData.Select(x => x.Date.ToString("MMM dd")).ToArray();
+        
+        Series = new List<ChartSeries>
+        {
+            new ChartSeries
+            {
+                Name = "Daily Sales",
+                Data = salesData.Select(x => (double)x.Amount).ToArray()
+            }
+        };
+
+        StateHasChanged();
+    }
+}

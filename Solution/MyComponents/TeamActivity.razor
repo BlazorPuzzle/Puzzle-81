@@ -1,0 +1,113 @@
+@using MudBlazor
+@implements IDashboardComponent
+
+<MudPaper Class="pa-4">
+    <MudStack>
+        <MudText Typo="Typo.h6">Team Activity</MudText>
+
+        <MudList Clickable="false">
+            @foreach (var activity in Activities)
+            {
+                <MudListItem>
+                    <div class="d-flex gap-4">
+                        <MudAvatar Color="@activity.AvatarColor" Size="Size.Medium">
+                            @activity.UserInitials
+                        </MudAvatar>
+                        <div>
+                            <MudText Typo="Typo.body1">
+                                <strong>@activity.UserName</strong> @activity.Action
+                            </MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                @GetTimeAgo(activity.Timestamp)
+                            </MudText>
+                        </div>
+                    </div>
+                </MudListItem>
+                @if (Activities.Last() != activity)
+                {
+                    <MudDivider />
+                }
+            }
+        </MudList>
+
+        @if (Activities.Count == 0)
+        {
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="pa-4 text-center">
+                No recent activity
+            </MudText>
+        }
+    </MudStack>
+</MudPaper>
+
+@code {
+    private List<ActivityItem> Activities { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        // In a real app, these would come from a service
+        Activities = new List<ActivityItem>
+        {
+            new()
+            {
+                UserName = "Sarah Johnson",
+                UserInitials = "SJ",
+                Action = "closed deal with Acme Corp worth $50,000",
+                Timestamp = DateTime.Now.AddMinutes(-15),
+                AvatarColor = Color.Success
+            },
+            new()
+            {
+                UserName = "Michael Chen",
+                UserInitials = "MC",
+                Action = "created a new proposal for TechStart Inc",
+                Timestamp = DateTime.Now.AddHours(-2),
+                AvatarColor = Color.Info
+            },
+            new()
+            {
+                UserName = "Emily Rodriguez",
+                UserInitials = "ER",
+                Action = "scheduled a client meeting with Global Solutions",
+                Timestamp = DateTime.Now.AddHours(-4),
+                AvatarColor = Color.Warning
+            },
+            new()
+            {
+                UserName = "David Kim",
+                UserInitials = "DK",
+                Action = "updated the Q3 sales forecast",
+                Timestamp = DateTime.Now.AddHours(-6),
+                AvatarColor = Color.Primary
+            }
+        };
+    }
+
+    private string GetTimeAgo(DateTime timestamp)
+    {
+        var span = DateTime.Now - timestamp;
+
+        if (span.TotalMinutes < 60)
+        {
+            var minutes = (int)span.TotalMinutes;
+            return $"{minutes} {(minutes == 1 ? "minute" : "minutes")} ago";
+        }
+        
+        if (span.TotalHours < 24)
+        {
+            var hours = (int)span.TotalHours;
+            return $"{hours} {(hours == 1 ? "hour" : "hours")} ago";
+        }
+
+        var days = (int)span.TotalDays;
+        return $"{days} {(days == 1 ? "day" : "days")} ago";
+    }
+
+    private class ActivityItem
+    {
+        public string UserName { get; set; } = "";
+        public string UserInitials { get; set; } = "";
+        public string Action { get; set; } = "";
+        public DateTime Timestamp { get; set; }
+        public Color AvatarColor { get; set; }
+    }
+}
