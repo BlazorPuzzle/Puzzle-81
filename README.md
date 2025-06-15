@@ -1,6 +1,6 @@
-# Puzzle-81: Dynamic Component Management in Blazor
+# Puzzle #81: Dashboard Dilemma
 
-Carl and Jeff are helping a customer who needs to build a flexible dashboard system in their Blazor application. The customer wants to allow users to customize their dashboards by dynamically adding and removing components from a component library. Let's see how we can solve this challenge!
+Help Carl and Jeff create a dashboard where components can be added and removed at will
 
 ## The Challenge
 
