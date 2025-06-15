@@ -1,6 +1,10 @@
 # Puzzle #81: Dashboard Dilemma
 
-Help Carl and Jeff create a dashboard where components can be added and removed at will
+Help Carl and Jeff create a dashboard where components can be added and removed at will.
+
+YouTube Video: https://youtu.be/qNy24pd5nvc
+
+Blazor Puzzle Home Page: https://blazorpuzzle.com
 
 ## The Challenge
 
